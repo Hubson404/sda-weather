@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -16,7 +18,7 @@ public class LocationController {
     private final LocationMapper locationMapper;
 
     @GetMapping("/locations")
-    public Iterable<Location> getAllLocations() {
+    public List<Location> getAllLocations() {
         return locationCreateService.getAllLocations();
     }
 
@@ -33,6 +35,7 @@ public class LocationController {
         int latitude = locationDTO.getLatitude();
         String regionName = locationDTO.getRegion();
         String coutryName = locationDTO.getCountry();
+        // todo use eg. LocationDefinition to store a data
         Location newLocation = locationCreateService.createLocation(
                 cityName,
                 longitude,

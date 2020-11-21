@@ -5,13 +5,15 @@ import org.hubson404.weather.exceptions.InsufficientDataException;
 import org.hubson404.weather.exceptions.InvalidDataException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class LocationCreateService {
 
     private final LocationRepository locationRepository;
 
-    public Iterable<Location> getAllLocations() {
+    public List<Location> getAllLocations() { // todo move to another service
         return locationRepository.findAll();
     }
 
@@ -20,7 +22,7 @@ public class LocationCreateService {
                                    int longitude,
                                    String region,
                                    String country
-    ){
+    ) {
         if (cityName.isEmpty()) {
             throw new InsufficientDataException("CityName cannot be empty");
         }
@@ -30,9 +32,10 @@ public class LocationCreateService {
         if (country.isEmpty()) {
             throw new InsufficientDataException("CountryName cannot be empty");
         }
-        if (longitude < -90 || longitude >90){
-            throw new InvalidDataException("Longitude value is invalid");
-        } if (latitude < -180 || latitude >180){
+        if (longitude < -90 || longitude > 90) {
+            throw new InvalidDataException("Longitude value is invalid");   // todo pass this value
+        }
+        if (latitude < -180 || latitude > 180) {
             throw new InvalidDataException("Latitude value is invalid");
         }
 
