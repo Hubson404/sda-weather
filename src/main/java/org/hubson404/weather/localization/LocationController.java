@@ -19,7 +19,7 @@ public class LocationController {
 
     @GetMapping("/locations")
     public List<Location> getAllLocations() {
-        return locationCreateService.getAllLocations();
+        return locationFetchService.getAllLocations();
     }
 
     @GetMapping("/locations/{id}")
@@ -30,25 +30,19 @@ public class LocationController {
 
     @PostMapping("/locations")
     ResponseEntity<LocationDTO> creteEntry(@RequestBody LocationDTO locationDTO) {
-        String cityName = locationDTO.getCityName();
-        int longitude = locationDTO.getLongitude();
-        int latitude = locationDTO.getLatitude();
-        String regionName = locationDTO.getRegion();
-        String coutryName = locationDTO.getCountry();
-        // todo use eg. LocationDefinition to store a data
-        Location newLocation = locationCreateService.createLocation(
-                cityName,
-                longitude,
-                latitude,
-                regionName,
-                coutryName
-        );
+
+        LocationDefinition locationDefinition = new LocationDefinition(
+                locationDTO.getCityName(),
+                locationDTO.getLongitude(),
+                locationDTO.getLatitude(),
+                locationDTO.getRegionName(),
+                locationDTO.getCountryName());
+
+        Location newLocation = locationCreateService.createLocation(locationDefinition);
 
         log.info(newLocation.toString());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(locationMapper.mapToLocationDto(newLocation));
     }
-
-
 }

@@ -24,16 +24,14 @@ class LocationCreateServiceTest {
     void createLocation_callsLocationRepository() {
         // given
         when(locationRepository.save(any(Location.class))).thenReturn(new Location());
-
         // when
-        Location result = locationCreateService.createLocation(
+        Location result = locationCreateService.createLocation(new LocationDefinition(
                 "city",
                 0,
                 0,
                 "region",
                 "country"
-        );
-
+        ));
         // then
         verify(locationRepository).save(any(Location.class));
     }
@@ -41,13 +39,13 @@ class LocationCreateServiceTest {
     @Test
     void createLocation_whenCityNameIsEmpty_throwsInsufficientDataException() {
         // when
-        Throwable result = catchThrowable(() -> locationCreateService.createLocation(
+        Throwable result = catchThrowable(() -> locationCreateService.createLocation(new LocationDefinition(
                 "",
                 0,
                 0,
                 "region",
-                "country"));
-
+                "country"
+        )));
         // then
         assertThat(result).isExactlyInstanceOf(InsufficientDataException.class);
         verify(locationRepository, times(0)).save(any(Location.class));

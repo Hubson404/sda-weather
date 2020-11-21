@@ -16,8 +16,8 @@ public class LocationMapper {
         locationDto.setCityName(newLocation.getCityName());
         locationDto.setLongitude(newLocation.getLongitude());
         locationDto.setLatitude(newLocation.getLatitude());
-        locationDto.setRegion(newLocation.getRegion());
-        locationDto.setCountry(newLocation.getCountry());
+        locationDto.setRegionName(newLocation.getRegionName());
+        locationDto.setCountryName(newLocation.getCountryName());
 
         return locationDto;
     }

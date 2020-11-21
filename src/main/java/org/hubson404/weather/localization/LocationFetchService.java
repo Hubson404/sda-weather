@@ -6,11 +6,17 @@ import org.hubson404.weather.exceptions.InvalidDataException;
 import org.hubson404.weather.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class LocationFetchService {
 
     private final LocationRepository locationRepository;
+
+    public List<Location> getAllLocations() {
+        return locationRepository.findAll();
+    }
 
     public Location fetchEntry(String id) {
         return locationRepository.findById(Long.valueOf(id))

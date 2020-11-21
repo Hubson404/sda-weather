@@ -1,6 +1,7 @@
 package org.hubson404.weather.localization;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Location {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +19,6 @@ public class Location {
     String cityName;
     int latitude;
     int longitude;
-    String region;
-    String country;
+    String regionName;
+    String countryName;
 }

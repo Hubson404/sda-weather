@@ -5,45 +5,35 @@ import org.hubson404.weather.exceptions.InsufficientDataException;
 import org.hubson404.weather.exceptions.InvalidDataException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class LocationCreateService {
 
     private final LocationRepository locationRepository;
 
-    public List<Location> getAllLocations() { // todo move to another service
-        return locationRepository.findAll();
-    }
-
-    public Location createLocation(String cityName,
-                                   int latitude,
-                                   int longitude,
-                                   String region,
-                                   String country
-    ) {
-        if (cityName.isEmpty()) {
+    public Location createLocation(LocationDefinition ld) {
+        if (ld.getCityName().isEmpty()) {
             throw new InsufficientDataException("CityName cannot be empty");
         }
-        if (region.isEmpty()) {
+        if (ld.getRegionName().isEmpty()) {
             throw new InsufficientDataException("RegionName cannot be empty");
         }
-        if (country.isEmpty()) {
+        if (ld.getCountryName().isEmpty()) {
             throw new InsufficientDataException("CountryName cannot be empty");
         }
-        if (longitude < -90 || longitude > 90) {
-            throw new InvalidDataException("Longitude value is invalid");   // todo pass this value
+
+        if (ld.getLongitude() < -90 || ld.getLongitude() > 90) {
+            throw new InvalidDataException("Longitude value " + ld.getLongitude() + " is invalid. Pass values between -90 and 90.");
         }
-        if (latitude < -180 || latitude > 180) {
-            throw new InvalidDataException("Latitude value is invalid");
+        if (ld.getLatitude() < -180 || ld.getLatitude() > 180) {
+            throw new InvalidDataException("Latitude value " + ld.getLatitude() + " is invalid. Pass values between -180 and 180.");
         }
 
         Location location = new Location();
-        location.setLatitude(latitude);
-        location.setLongitude(longitude);
-        location.setRegion(region);
-        location.setCountry(country);
+        location.setLongitude(ld.getLongitude());
+        location.setLatitude(ld.getLatitude());
+        location.setRegionName(ld.getRegionName());
+        location.setCountryName(ld.getCountryName());
 
         return locationRepository.save(location);
     }
