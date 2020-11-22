@@ -25,7 +25,7 @@ public class ForecastFetchService {
                 .queryParam("access_key", config.getApiKey())
                 .queryParam("query", location)
                 .queryParam("units", config.getUnits())
-                .queryParam("language", config.getLang())
+                .queryParam("lang", config.getLang())
                 .build();
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(build.toUri(), String.class);
