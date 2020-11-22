@@ -26,13 +26,7 @@ class LocationCreateServiceTest {
         // given
         when(locationRepository.save(any(Location.class))).thenReturn(new Location());
         // when
-        Location result = locationCreateService.createLocation(new LocationDefinition(
-                "city",
-                0,
-                0,
-                "region",
-                "country"
-        ));
+        Location result = locationCreateService.createLocation(new LocationDefinition("city", 0, 0, "region", "country"));
         // then
         verify(locationRepository, times(1)).save(any(Location.class));
     }
@@ -98,7 +92,7 @@ class LocationCreateServiceTest {
     }
 
     @Test
-    void createLocation_whenLongitudeValueIsInvalid_throwsInvalidDataException() {
+    void createLocation_whenLongitudeValueIsOver90_throwsInvalidDataException() {
         // when
         Throwable result = catchThrowable(() -> locationCreateService.createLocation(new LocationDefinition(
                 "city",
@@ -113,7 +107,7 @@ class LocationCreateServiceTest {
     }
 
     @Test
-    void createLocation_whenLongitudeValueIsInvalidNegativeCase_throwsInvalidDataException() {
+    void createLocation_whenLongitudeValueIsBlow90NegativeCase_throwsInvalidDataException() {
         // when
         Throwable result = catchThrowable(() -> locationCreateService.createLocation(new LocationDefinition(
                 "city",
@@ -128,7 +122,7 @@ class LocationCreateServiceTest {
     }
 
     @Test
-    void createLocation_whenLatitudeValueIsInvalid_throwsInvalidDataException() {
+    void createLocation_whenLatitudeValueIsOver180_throwsInvalidDataException() {
         // when
         Throwable result = catchThrowable(() -> locationCreateService.createLocation(new LocationDefinition(
                 "city",
@@ -141,8 +135,9 @@ class LocationCreateServiceTest {
         assertThat(result).isExactlyInstanceOf(InvalidDataException.class);
         verify(locationRepository, times(0)).save(any(Location.class));
     }
+
     @Test
-    void createLocation_whenLatitudeValueIsInvalidNegativeCase_throwsInvalidDataException() {
+    void createLocation_whenLatitudeValueIsBelow180NegativeCase_throwsInvalidDataException() {
         // when
         Throwable result = catchThrowable(() -> locationCreateService.createLocation(new LocationDefinition(
                 "city",
@@ -155,6 +150,7 @@ class LocationCreateServiceTest {
         assertThat(result).isExactlyInstanceOf(InvalidDataException.class);
         verify(locationRepository, times(0)).save(any(Location.class));
     }
+
     @Test
     void createLocation_whenLongitudePositiveEdgeCase_callsLocationRepository() {
         // given

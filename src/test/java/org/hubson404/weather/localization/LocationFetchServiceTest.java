@@ -24,7 +24,7 @@ class LocationFetchServiceTest {
     LocationFetchService locationFetchService;
 
     @Test
-    void getAllLocations() {
+    void getAllLocations_returnSavedLocations() {
         //given
         when(locationRepository.findAll()).thenReturn(Arrays.asList(new Location(), new Location(), new Location()));
         //when
@@ -35,7 +35,7 @@ class LocationFetchServiceTest {
     }
 
     @Test
-    void fetchLocation_whenHappyPath_returnsLocation() {
+    void fetchLocation_returnsLocation() {
         //given
         when(locationRepository.findById(anyLong())).thenReturn(java.util.Optional.of(new Location()));
         //when
@@ -46,7 +46,7 @@ class LocationFetchServiceTest {
     }
 
     @Test
-    void fetchLocation_whenLocationDoesntExists_ThrowsNotFoundException() {
+    void fetchLocation_whenLocationDoesntExist_throwsNotFoundException() {
         //given
         when(locationRepository.findById(anyLong())).thenThrow(NotFoundException.class);
         //when
@@ -54,6 +54,5 @@ class LocationFetchServiceTest {
         // then
         Assertions.assertThat(result).isExactlyInstanceOf(NotFoundException.class);
         verify(locationRepository, times(1)).findById(anyLong());
-
     }
 }
