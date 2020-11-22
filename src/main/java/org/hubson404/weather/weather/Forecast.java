@@ -1,16 +1,20 @@
 package org.hubson404.weather.weather;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class ForecastDTO {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
+@Data
+@NoArgsConstructor
+public class Forecast {
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     Long id;
     String temperature;
     String airPressure;

@@ -11,11 +11,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 @RequiredArgsConstructor
-public class ForecastService {
+public class ForecastFetchService {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     private final WeatherStackConfig config;
+    private final ForecastRepository forecastRepository;
+    private final ForecastMapper forecastMapper;
 
     public ForecastDTO getForecast(String location) {
 
@@ -23,7 +25,7 @@ public class ForecastService {
                 .queryParam("access_key", config.getApiKey())
                 .queryParam("query", location)
                 .queryParam("units", config.getUnits())
-                .queryParam("lang", config.getLang())
+                .queryParam("language", config.getLang())
                 .build();
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(build.toUri(), String.class);
@@ -36,9 +38,20 @@ public class ForecastService {
 
         try {
             ForecastDTO forecastDTO = objectMapper.readValue(responseBody, ForecastDTO.class);
-            return forecastDTO;
+            return saveForecastToDatabase(forecastDTO);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Błąd podczas przetwarzania informacji o pogodzie");
         }
+    }
+
+    public ForecastDTO saveForecastToDatabase(ForecastDTO forecastDTO) {
+        Forecast forecast = new Forecast();
+        forecast.setTemperature(forecastDTO.getTemperature());
+        forecast.setAirPressure(forecastDTO.getAirPressure());
+        forecast.setHumidity(forecastDTO.getHumidity());
+        forecast.setWindSpeed(forecastDTO.getWindSpeed());
+        forecast.setWindDirection(forecastDTO.getWindDirection());
+        forecast.setWindDegree(forecastDTO.getWindDegree());
+        return forecastMapper.mapToForecastDto(forecastRepository.save(forecast));
     }
 }

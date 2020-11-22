@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ForecastController {
 
-    private final ForecastService forecastService;
+    private final ForecastFetchService forecastService;
+
 
     @GetMapping("/weather")
-    public ResponseEntity<ForecastDTO> getForecast(@RequestParam String location){
-        ForecastDTO forecast = forecastService.getForecast(location);
-        return ResponseEntity.status(HttpStatus.OK).body(forecast);
+    public ResponseEntity<ForecastDTO> getForecast(@RequestParam String location) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(forecastService.getForecast(location));
     }
 }
