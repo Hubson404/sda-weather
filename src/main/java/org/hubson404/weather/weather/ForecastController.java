@@ -13,7 +13,6 @@ public class ForecastController {
 
     private final ForecastService forecastService;
 
-
     @GetMapping("/weather")
     public ResponseEntity<ForecastDTO> getForecast(@RequestParam String location) {
         return ResponseEntity.status(HttpStatus.OK)

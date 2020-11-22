@@ -36,4 +36,17 @@ class ForecastServiceIntegrationTest {
         MockHttpServletResponse response = result.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
     }
+
+    @Test
+    void fetchForecast_whenLocationParameterIsEmpty_returnsDetailsOfForecast() throws Exception {
+        // given
+        MockHttpServletRequestBuilder request = get("/weather")
+                .contentType(MediaType.APPLICATION_JSON);
+        // when
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        // then
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
 }

@@ -35,11 +35,9 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(DataProcessingErrorException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     void dataProcessingErrorHandler(DataProcessingErrorException exception) {
         log.error(exception.getMessage());
     }
-
-
 
 }
