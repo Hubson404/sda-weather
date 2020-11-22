@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -20,8 +21,9 @@ public class LocationController {
     private final ForecastService forecastService;
 
     @GetMapping("/locations")
-    List<Location> getAllLocations() {
-        return locationFetchService.getAllLocations();
+    List<LocationDTO> getAllLocations() {
+        return locationFetchService.getAllLocations().stream()
+                .map(locationMapper::mapToLocationDto).collect(Collectors.toList());
     }
 
     @GetMapping("/locations/{id}")
