@@ -31,7 +31,6 @@ class LocationFetchServiceTest {
         List<Location> allLocations = locationFetchService.getAllLocations();
         //then
         assertThat(allLocations.size()).isEqualTo(3);
-
         verify(locationRepository, times(1)).findAll();
     }
 
