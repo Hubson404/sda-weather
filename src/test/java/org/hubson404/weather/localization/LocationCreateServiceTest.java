@@ -1,6 +1,7 @@
 package org.hubson404.weather.localization;
 
 import org.hubson404.weather.exceptions.InsufficientDataException;
+import org.hubson404.weather.exceptions.InvalidDataException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,7 +34,7 @@ class LocationCreateServiceTest {
                 "country"
         ));
         // then
-        verify(locationRepository).save(any(Location.class));
+        verify(locationRepository, times(1)).save(any(Location.class));
     }
 
     @Test
@@ -43,11 +44,26 @@ class LocationCreateServiceTest {
                 "",
                 0,
                 0,
-                "region",
+                "",
                 "country"
         )));
         // then
         assertThat(result).isExactlyInstanceOf(InsufficientDataException.class);
+        verify(locationRepository, times(0)).save(any(Location.class));
+    }
+
+    @Test
+    void createLocation_whenLongitudeValueIsInvalid_throwsInvalidDataException() {
+        // when
+        Throwable result = catchThrowable(() -> locationCreateService.createLocation(new LocationDefinition(
+                "city",
+                100,
+                0,
+                "",
+                "country"
+        )));
+        // then
+        assertThat(result).isExactlyInstanceOf(InvalidDataException.class);
         verify(locationRepository, times(0)).save(any(Location.class));
     }
 }

@@ -11,14 +11,23 @@ public class LocationMapper {
 
     LocationDTO mapToLocationDto(Location newLocation) {
 
-        LocationDTO locationDto = new LocationDTO();
-        locationDto.setId(newLocation.getId());
-        locationDto.setCityName(newLocation.getCityName());
-        locationDto.setLongitude(newLocation.getLongitude());
-        locationDto.setLatitude(newLocation.getLatitude());
-        locationDto.setRegionName(newLocation.getRegionName());
-        locationDto.setCountryName(newLocation.getCountryName());
+        return LocationDTO.builder()
+                .cityName(newLocation.getCityName())
+                .longitude(newLocation.getLongitude())
+                .latitude(newLocation.getLatitude())
+                .regionName(newLocation.getRegionName())
+                .countryName(newLocation.getCountryName())
+                .build();
+    }
 
-        return locationDto;
+    LocationDefinition mapToLocalisationDefinition(LocationDTO DTO) {
+
+        return LocationDefinition.builder()
+                .cityName(DTO.getCityName())
+                .longitude(DTO.getLongitude())
+                .latitude(DTO.getLatitude())
+                .regionName(DTO.getRegionName())
+                .countryName(DTO.getCountryName())
+                .build();
     }
 }

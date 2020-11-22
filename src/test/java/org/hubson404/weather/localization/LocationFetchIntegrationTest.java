@@ -35,6 +35,7 @@ class LocationFetchIntegrationTest {
         location.setCountryName("new-country");
         Location savedLocation = locationRepository.save(location);
         Long id = savedLocation.getId();
+
         MockHttpServletRequestBuilder request = get("/locations/" + id)
                 .contentType(MediaType.APPLICATION_JSON);
 

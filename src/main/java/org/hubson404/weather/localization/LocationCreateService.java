@@ -15,9 +15,6 @@ public class LocationCreateService {
         if (ld.getCityName().isEmpty()) {
             throw new InsufficientDataException("CityName cannot be empty");
         }
-        if (ld.getRegionName().isEmpty()) {
-            throw new InsufficientDataException("RegionName cannot be empty");
-        }
         if (ld.getCountryName().isEmpty()) {
             throw new InsufficientDataException("CountryName cannot be empty");
         }
@@ -28,7 +25,6 @@ public class LocationCreateService {
         if (ld.getLatitude() < -180 || ld.getLatitude() > 180) {
             throw new InvalidDataException("Latitude value " + ld.getLatitude() + " is invalid. Pass values between -180 and 180.");
         }
-
         Location location = new Location();
         location.setLongitude(ld.getLongitude());
         location.setLatitude(ld.getLatitude());
@@ -37,5 +33,4 @@ public class LocationCreateService {
 
         return locationRepository.save(location);
     }
-
 }

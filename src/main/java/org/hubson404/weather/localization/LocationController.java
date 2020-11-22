@@ -18,26 +18,20 @@ public class LocationController {
     private final LocationMapper locationMapper;
 
     @GetMapping("/locations")
-    public List<Location> getAllLocations() {
+    List<Location> getAllLocations() {
         return locationFetchService.getAllLocations();
     }
 
     @GetMapping("/locations/{id}")
-    LocationDTO getEntries(@PathVariable String id) {
-        Location location = locationFetchService.fetchEntry(id);
+    LocationDTO getLocationById(@PathVariable String id) {
+        Location location = locationFetchService.fetchLocationById(id);
         return locationMapper.mapToLocationDto(location);
     }
 
     @PostMapping("/locations")
-    ResponseEntity<LocationDTO> creteEntry(@RequestBody LocationDTO locationDTO) {
+    ResponseEntity<LocationDTO> creteLocation(@RequestBody LocationDTO locationDTO) {
 
-        LocationDefinition locationDefinition = new LocationDefinition(
-                locationDTO.getCityName(),
-                locationDTO.getLongitude(),
-                locationDTO.getLatitude(),
-                locationDTO.getRegionName(),
-                locationDTO.getCountryName());
-
+        LocationDefinition locationDefinition = locationMapper.mapToLocalisationDefinition(locationDTO);
         Location newLocation = locationCreateService.createLocation(locationDefinition);
 
         log.info(newLocation.toString());
