@@ -17,11 +17,11 @@ public class ForecastService {
     private final ObjectMapper objectMapper;
     private final WeatherStackConfig config;
 
-    public ForecastDTO getForecast() {
+    public ForecastDTO getForecast(String location) {
 
         UriComponents build = UriComponentsBuilder.fromHttpUrl(config.getUri())
-                .queryParam("appid", config.getApiKey())
-                .queryParam("q", "Warsaw")
+                .queryParam("access_key", config.getApiKey())
+                .queryParam("query", location)
                 .queryParam("units", config.getUnits())
                 .queryParam("lang", config.getLang())
                 .build();
