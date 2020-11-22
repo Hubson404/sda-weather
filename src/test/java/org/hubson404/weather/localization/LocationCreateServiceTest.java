@@ -102,7 +102,22 @@ class LocationCreateServiceTest {
         // when
         Throwable result = catchThrowable(() -> locationCreateService.createLocation(new LocationDefinition(
                 "city",
-                100,
+                91,
+                0,
+                "",
+                "country"
+        )));
+        // then
+        assertThat(result).isExactlyInstanceOf(InvalidDataException.class);
+        verify(locationRepository, times(0)).save(any(Location.class));
+    }
+
+    @Test
+    void createLocation_whenLongitudeValueIsInvalidNegativeCase_throwsInvalidDataException() {
+        // when
+        Throwable result = catchThrowable(() -> locationCreateService.createLocation(new LocationDefinition(
+                "city",
+                -91,
                 0,
                 "",
                 "country"
@@ -118,12 +133,89 @@ class LocationCreateServiceTest {
         Throwable result = catchThrowable(() -> locationCreateService.createLocation(new LocationDefinition(
                 "city",
                 0,
-                200,
+                181,
                 "",
                 "country"
         )));
         // then
         assertThat(result).isExactlyInstanceOf(InvalidDataException.class);
         verify(locationRepository, times(0)).save(any(Location.class));
+    }
+    @Test
+    void createLocation_whenLatitudeValueIsInvalidNegativeCase_throwsInvalidDataException() {
+        // when
+        Throwable result = catchThrowable(() -> locationCreateService.createLocation(new LocationDefinition(
+                "city",
+                0,
+                -181,
+                "",
+                "country"
+        )));
+        // then
+        assertThat(result).isExactlyInstanceOf(InvalidDataException.class);
+        verify(locationRepository, times(0)).save(any(Location.class));
+    }
+    @Test
+    void createLocation_whenLongitudePositiveEdgeCase_callsLocationRepository() {
+        // given
+        when(locationRepository.save(any(Location.class))).thenReturn(new Location());
+        // when
+        Location result = locationCreateService.createLocation(new LocationDefinition(
+                "city",
+                90,
+                0,
+                "region",
+                "country"
+        ));
+        // then
+        verify(locationRepository, times(1)).save(any(Location.class));
+    }
+
+    @Test
+    void createLocation_whenLongitudeNegativeEdgeCase_callsLocationRepository() {
+        // given
+        when(locationRepository.save(any(Location.class))).thenReturn(new Location());
+        // when
+        Location result = locationCreateService.createLocation(new LocationDefinition(
+                "city",
+                -90,
+                0,
+                "region",
+                "country"
+        ));
+        // then
+        verify(locationRepository, times(1)).save(any(Location.class));
+    }
+
+    @Test
+    void createLocation_whenLatitudeNegativeEdgeCase_callsLocationRepository() {
+        // given
+        when(locationRepository.save(any(Location.class))).thenReturn(new Location());
+        // when
+        Location result = locationCreateService.createLocation(new LocationDefinition(
+                "city",
+                0,
+                -180,
+                "region",
+                "country"
+        ));
+        // then
+        verify(locationRepository, times(1)).save(any(Location.class));
+    }
+
+    @Test
+    void createLocation_whenLatitudePositiveEdgeCase_callsLocationRepository() {
+        // given
+        when(locationRepository.save(any(Location.class))).thenReturn(new Location());
+        // when
+        Location result = locationCreateService.createLocation(new LocationDefinition(
+                "city",
+                0,
+                180,
+                "region",
+                "country"
+        ));
+        // then
+        verify(locationRepository, times(1)).save(any(Location.class));
     }
 }
