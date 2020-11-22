@@ -22,7 +22,7 @@ class ForecastServiceIntegrationTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
-    ForecastFetchService forecastService;
+    ForecastService forecastService;
 
     @Test
     void fetchForecast_returnsDetailsOfForecast() throws Exception {

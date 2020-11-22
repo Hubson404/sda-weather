@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ForecastController {
 
-    private final ForecastFetchService forecastService;
+    private final ForecastService forecastService;
 
 
     @GetMapping("/weather")

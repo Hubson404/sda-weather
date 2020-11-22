@@ -12,19 +12,34 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(InsufficientDataException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    void badRequestHandler(InsufficientDataException exception) {
+    void insufficientDataHandler(InsufficientDataException exception) {
         log.error(exception.getMessage());
     }
 
     @ExceptionHandler(InvalidDataException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    void badRequestHandler(InvalidDataException exception) {
+    void invalidDataHandler(InvalidDataException exception) {
         log.error(exception.getMessage());
     }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    void badRequestHandler(NotFoundException exception) {
+    void notFoundHandler(NotFoundException exception) {
         log.error(exception.getMessage());
     }
+
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    void badRequestHandler(BadRequestException exception) {
+        log.error(exception.getMessage());
+    }
+
+    @ExceptionHandler(DataProcessingErrorException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    void dataProcessingErrorHandler(DataProcessingErrorException exception) {
+        log.error(exception.getMessage());
+    }
+
+
+
 }

@@ -22,7 +22,7 @@ class ForecastServiceTest {
     WeatherStackConfig weatherStackConfig;
 
     @InjectMocks
-    ForecastFetchService forecastService;
+    ForecastService forecastService;
 
     @Disabled
     @Test
