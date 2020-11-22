@@ -8,6 +8,6 @@ class WeatherApplicationTests {
 
     @Test
     void contextLoads() {
-    }
 
+    }
 }
