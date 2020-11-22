@@ -12,10 +12,10 @@ public class LocationCreateService {
     private final LocationRepository locationRepository;
 
     public Location createLocation(LocationDefinition ld) {
-        if (ld.getCityName().isEmpty()) {
+        if (ld.getCityName().isBlank()) {
             throw new InsufficientDataException("CityName cannot be empty");
         }
-        if (ld.getCountryName().isEmpty()) {
+        if (ld.getCountryName().isBlank()) {
             throw new InsufficientDataException("CountryName cannot be empty");
         }
 
