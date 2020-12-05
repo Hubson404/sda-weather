@@ -2,6 +2,7 @@ package org.hubson404.weather.weather;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hubson404.weather.localization.Location;
 import org.springframework.stereotype.Component;
 
 @Data
@@ -21,7 +22,7 @@ class ForecastMapper {
                 .build();
     }
 
-    ForecastDTO mapToForecastDto(ForecastApiResponse forecastApiResponse, int period) {
+    ForecastDTO mapToForecastDto(ForecastApiResponse forecastApiResponse, int period, Location location) {
         int listingsPerPeriod = 8;
 
         ForecastApiResponse.WeatherListing weatherListing;
@@ -42,6 +43,7 @@ class ForecastMapper {
                 .windSpeed(wind.getSpeed().toString())
                 .windDegree(wind.getDeg().toString())
                 .date(weatherListing.getDt().toString())
+                .location(location)
                 .build();
     }
 }

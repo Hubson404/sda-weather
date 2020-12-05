@@ -8,8 +8,8 @@ import java.util.List;
 @Data
 public class ForecastApiResponse {
 
-    @JsonProperty("cod")
-    private String cod;
+//    @JsonProperty("cod")
+//    private String cod;
 //    @JsonProperty("message")
 //    private Integer message;
 //    @JsonProperty("cnt")

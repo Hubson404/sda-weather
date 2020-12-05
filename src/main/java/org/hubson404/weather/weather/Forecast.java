@@ -2,11 +2,9 @@ package org.hubson404.weather.weather;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hubson404.weather.localization.Location;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -23,6 +21,8 @@ public class Forecast {
     String humidity;
     String date;
 
+    @ManyToOne
+    Location location;
 
 
 }

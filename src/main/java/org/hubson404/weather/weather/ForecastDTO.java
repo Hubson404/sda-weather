@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hubson404.weather.localization.Location;
 
 @Data
 @AllArgsConstructor
@@ -18,4 +19,5 @@ class ForecastDTO {
     String windSpeed;
     String humidity;
     String date;            // todo timestamp -> LocalDateTime
+    Location location;
 }

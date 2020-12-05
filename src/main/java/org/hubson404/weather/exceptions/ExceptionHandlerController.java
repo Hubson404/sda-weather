@@ -10,6 +10,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Slf4j
 public class ExceptionHandlerController {
 
+
+    @ExceptionHandler(PeriodValueOutOfBoundsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    void PeriodValueOutOfBoundsHandler(PeriodValueOutOfBoundsException exception) {
+        log.error(exception.getMessage());
+    }
+
     @ExceptionHandler(UnknownLocationException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     void unknownLocationHandler(UnknownLocationException exception) {
@@ -41,7 +48,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(DataProcessingErrorException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     void dataProcessingErrorHandler(DataProcessingErrorException exception) {
         log.error(exception.getMessage());
     }

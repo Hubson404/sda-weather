@@ -37,22 +37,22 @@ class LocationCreateService {
         return locationRepository.save(location);
     }
 
-//    @EventListener(ApplicationReadyEvent.class)
-//    public void locationRepositoryInit(){
-//        Location location1 = new Location();
-//        location1.setCityName("Warsaw");
-//        location1.setLongitude(21);
-//        location1.setLatitude(52);
-//        location1.setCountryName("Poland");
-//
-//        Location location2= new Location();
-//        location2.setCityName("Gdansk");
-//        location2.setLongitude(18);
-//        location2.setLatitude(54);
-//        location2.setCountryName("Poland");
-//
-//        locationRepository.save(location1);
-//        locationRepository.save(location2);
-//
-//    }
+    @EventListener(ApplicationReadyEvent.class)
+    public void locationRepositoryInit(){
+        Location location1 = new Location();
+        location1.setCityName("Warsaw");
+        location1.setLongitude(21);
+        location1.setLatitude(52);
+        location1.setCountryName("Poland");
+
+        Location location2= new Location();
+        location2.setCityName("Gdansk");
+        location2.setLongitude(18);
+        location2.setLatitude(54);
+        location2.setCountryName("Poland");
+
+        locationRepository.save(location1);
+        locationRepository.save(location2);
+
+    }
 }

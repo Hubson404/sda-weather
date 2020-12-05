@@ -23,7 +23,9 @@ public class LocationFetchService {
     }
 
     public Location getLocationByCityName(String cityName) {
-        return locationRepository.findLocationByCityName(cityName)
+        Location location = locationRepository.findLocationByCityName(cityName)
                 .orElseThrow(() -> new UnknownLocationException("Couldn't find location: " + cityName));
+
+        return location;
     }
 }
