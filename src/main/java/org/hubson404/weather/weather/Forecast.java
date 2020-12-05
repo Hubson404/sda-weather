@@ -18,8 +18,8 @@ public class Forecast {
     Long id;
     String temperature;
     String airPressure;
-    String windDirection;
     String windDegree;
     String windSpeed;
     String humidity;
+
 }

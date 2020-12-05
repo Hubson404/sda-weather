@@ -2,7 +2,6 @@ package org.hubson404.weather.localization;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hubson404.weather.weather.ForecastService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,6 @@ public class LocationController {
     private final LocationCreateService locationCreateService;
     private final LocationFetchService locationFetchService;
     private final LocationMapper locationMapper;
-    private final ForecastService forecastService;
 
     @GetMapping("/locations")
     List<LocationDTO> getAllLocations() {

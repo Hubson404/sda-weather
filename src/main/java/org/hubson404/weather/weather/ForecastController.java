@@ -11,11 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ForecastController {
 
-    private final ForecastService forecastService;
+    private final ForecastFetchService forecastFetchService;
+    private final ForecastMapper forecastMapper;
 
-    @GetMapping("/weather")
-    public ResponseEntity<ForecastDTO> getForecast(@RequestParam String location) {
+    @GetMapping("/forecast")
+    public ResponseEntity<ForecastDTO> getForecast(@RequestParam String location, @RequestParam(required = false, defaultValue = "1") int period) {
+        Forecast forecast = forecastFetchService.getForecast(location, period);
+        ForecastDTO forecastDTO = forecastMapper.mapToForecastDto(forecast);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(forecastService.getForecast(location));
+                .body(forecastDTO);
     }
+
 }

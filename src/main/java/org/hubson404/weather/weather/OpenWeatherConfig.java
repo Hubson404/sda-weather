@@ -8,8 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @Setter
 @ToString
-@ConfigurationProperties("org.hubson404.weather.weatherstack-api")
-public class WeatherStackConfig {
+@ConfigurationProperties(prefix = "org.hubson404.weather.openweathermap-api")
+public class OpenWeatherConfig {
 
     private String apiKey;
     private String uri;

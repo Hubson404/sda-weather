@@ -17,17 +17,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ForecastServiceIntegrationTest {
+class ForecastFetchServiceIntegrationTest {
 
     @Autowired
     MockMvc mockMvc;
     @Autowired
-    ForecastService forecastService;
+    ForecastFetchService forecastFetchService;
 
     @Test
     void fetchForecast_returnsDetailsOfForecast() throws Exception {
         // given
-        MockHttpServletRequestBuilder request = get("/weather?location=Warsaw")
+        MockHttpServletRequestBuilder request = get("/weather")
+                .param("location","Warsaw")
                 .contentType(MediaType.APPLICATION_JSON);
         // when
         MvcResult result = mockMvc.perform(request).andReturn();
