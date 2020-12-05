@@ -17,4 +17,5 @@ class ForecastDTO {
     String windDegree;
     String windSpeed;
     String humidity;
+    String date;
 }

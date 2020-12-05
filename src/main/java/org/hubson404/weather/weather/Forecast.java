@@ -21,5 +21,8 @@ public class Forecast {
     String windDegree;
     String windSpeed;
     String humidity;
+    String date;
+
+
 
 }

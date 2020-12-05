@@ -16,6 +16,7 @@ public class ForecastPersistService {
         forecast.setHumidity(forecastDTO.getHumidity());
         forecast.setWindSpeed(forecastDTO.getWindSpeed());
         forecast.setWindDegree(forecastDTO.getWindDegree());
+        forecast.setDate(forecastDTO.getDate());
         return forecastRepository.save(forecast);
     }
 }

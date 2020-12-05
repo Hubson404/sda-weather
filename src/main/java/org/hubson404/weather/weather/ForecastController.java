@@ -21,5 +21,4 @@ public class ForecastController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(forecastDTO);
     }
-
 }
