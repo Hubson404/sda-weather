@@ -27,9 +27,10 @@ class ForecastFetchServiceIntegrationTest {
     @Test
     void fetchForecast_returnsDetailsOfForecast() throws Exception {
         // given
-        MockHttpServletRequestBuilder request = get("/weather")
+        MockHttpServletRequestBuilder request = get("/forecast")
                 .param("location","Warsaw")
                 .contentType(MediaType.APPLICATION_JSON);
+
         // when
         MvcResult result = mockMvc.perform(request).andReturn();
 

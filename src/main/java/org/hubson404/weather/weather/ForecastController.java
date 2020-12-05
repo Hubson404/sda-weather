@@ -15,10 +15,9 @@ public class ForecastController {
     private final ForecastMapper forecastMapper;
 
     @GetMapping("/forecast")
-    public ResponseEntity<ForecastDTO> getForecast(@RequestParam String location, @RequestParam(required = false, defaultValue = "1") int period) {
+    public ForecastDTO getForecast(@RequestParam String location, @RequestParam(required = false, defaultValue = "1") int period) {
         Forecast forecast = forecastFetchService.getForecast(location, period);
         ForecastDTO forecastDTO = forecastMapper.mapToForecastDto(forecast);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(forecastDTO);
+        return forecastDTO;
     }
 }

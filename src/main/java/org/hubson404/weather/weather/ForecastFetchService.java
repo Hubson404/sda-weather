@@ -22,8 +22,11 @@ public class ForecastFetchService {
     private final ForecastMapper forecastMapper;
     private final ForecastPersistService forecastPersistService;
 
-    public Forecast getForecast(String location, int period) {
+//    @Value("${org.hubson404.weather.weatherstack-api.api-key}")
+//    private String keyId;
 
+    public Forecast getForecast(String location, int period) {
+        // todo check location
         UriComponents build = UriComponentsBuilder.fromHttpUrl(config.getUri())
                 .queryParam(config.getApiKeyParameterName(), config.getApiKey())
                 .queryParam(config.getQueryParameterName(), location)

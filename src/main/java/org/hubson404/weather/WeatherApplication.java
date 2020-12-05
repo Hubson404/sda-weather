@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 
 @SpringBootApplication
 @EnableConfigurationProperties({WeatherStackConfig.class, OpenWeatherConfig.class})
+//@ConfigurationPropertiesScan
 public class WeatherApplication {
 
     public static void main(String[] args) {

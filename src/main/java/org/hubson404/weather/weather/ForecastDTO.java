@@ -14,8 +14,8 @@ class ForecastDTO {
     Long id;
     String temperature;
     String airPressure;
-    String windDegree;
+    String windDegree;      // todo N, W, S, E, NW, SE 150 -> string
     String windSpeed;
     String humidity;
-    String date;
+    String date;            // todo timestamp -> LocalDateTime
 }
