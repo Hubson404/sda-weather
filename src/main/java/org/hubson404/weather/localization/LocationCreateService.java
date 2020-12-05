@@ -3,11 +3,13 @@ package org.hubson404.weather.localization;
 import lombok.RequiredArgsConstructor;
 import org.hubson404.weather.exceptions.InsufficientDataException;
 import org.hubson404.weather.exceptions.InvalidDataException;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LocationCreateService {
+class LocationCreateService {
 
     private final LocationRepository locationRepository;
 
@@ -26,6 +28,7 @@ public class LocationCreateService {
             throw new InvalidDataException("Latitude value " + ld.getLatitude() + " is invalid. Pass values between -180 and 180.");
         }
         Location location = new Location();
+        location.setCityName(ld.getCityName());
         location.setLongitude(ld.getLongitude());
         location.setLatitude(ld.getLatitude());
         location.setRegionName(ld.getRegionName());
@@ -33,4 +36,23 @@ public class LocationCreateService {
 
         return locationRepository.save(location);
     }
+
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void locationRepositoryInit(){
+//        Location location1 = new Location();
+//        location1.setCityName("Warsaw");
+//        location1.setLongitude(21);
+//        location1.setLatitude(52);
+//        location1.setCountryName("Poland");
+//
+//        Location location2= new Location();
+//        location2.setCityName("Gdansk");
+//        location2.setLongitude(18);
+//        location2.setLatitude(54);
+//        location2.setCountryName("Poland");
+//
+//        locationRepository.save(location1);
+//        locationRepository.save(location2);
+//
+//    }
 }

@@ -25,8 +25,8 @@ public class LocationController {
     }
 
     @GetMapping("/locations/{id}")
-    LocationDTO getLocationById(@PathVariable String id) {
-        Location location = locationFetchService.fetchLocationById(id);
+    LocationDTO getLocationById(@PathVariable Long id) {
+        Location location = locationFetchService.getLocationById(id);
         return locationMapper.mapToLocationDto(location);
     }
 

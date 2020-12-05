@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.hubson404.weather.exceptions.BadRequestException;
 import org.hubson404.weather.exceptions.DataProcessingErrorException;
-import org.hubson404.weather.weather.model.ForecastModel;
+import org.hubson404.weather.localization.Location;
+import org.hubson404.weather.localization.LocationFetchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -18,20 +19,22 @@ public class ForecastFetchService {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
+    ;
     private final OpenWeatherConfig config;
     private final ForecastMapper forecastMapper;
     private final ForecastPersistService forecastPersistService;
+    private final LocationFetchService locationFetchService;
 
-//    @Value("${org.hubson404.weather.weatherstack-api.api-key}")
-//    private String keyId;
+    public Forecast getForecast(String locationName, int period) {
 
-    public Forecast getForecast(String location, int period) {
-        // todo check location
-        UriComponents build = UriComponentsBuilder.fromHttpUrl(config.getUri())
-                .queryParam(config.getApiKeyParameterName(), config.getApiKey())
-                .queryParam(config.getQueryParameterName(), location)
-                .queryParam(config.getUnitsParameterName(), config.getUnits())
-                .queryParam(config.getLanguageParameterName(), config.getLang())
+        Location locationByCityName = locationFetchService.getLocationByCityName(locationName);
+
+        UriComponents build = UriComponentsBuilder
+                .fromHttpUrl("http://api.openweathermap.org/data/2.5/forecast")
+                .queryParam("appid", config.getApiKey())
+                .queryParam("q", locationName)
+                .queryParam("units", "metric")
+                .queryParam("lang", "en")
                 .build();
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(build.toUri(), String.class);
@@ -43,7 +46,7 @@ public class ForecastFetchService {
         String responseBody = responseEntity.getBody();
 
         try {
-            ForecastModel forecastModel = objectMapper.readValue(responseBody, ForecastModel.class);
+            ForecastApiResponse forecastModel = objectMapper.readValue(responseBody, ForecastApiResponse.class);
             return forecastPersistService.saveForecastToDatabase(forecastMapper.mapToForecastDto(forecastModel, period));
         } catch (JsonProcessingException e) {
             throw new DataProcessingErrorException("Unable to process forecast data.");

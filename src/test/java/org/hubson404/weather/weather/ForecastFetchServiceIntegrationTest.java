@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -28,7 +27,7 @@ class ForecastFetchServiceIntegrationTest {
     void fetchForecast_returnsDetailsOfForecast() throws Exception {
         // given
         MockHttpServletRequestBuilder request = get("/forecast")
-                .param("location","Warsaw")
+                .param("location", "Warsaw")
                 .contentType(MediaType.APPLICATION_JSON);
 
         // when
@@ -40,9 +39,9 @@ class ForecastFetchServiceIntegrationTest {
     }
 
     @Test
-    void fetchForecast_whenLocationParameterIsEmpty_returnsDetailsOfForecast() throws Exception {
+    void fetchForecast_whenLocationParameterIsEmpty_throwsException() throws Exception {
         // given
-        MockHttpServletRequestBuilder request = get("/weather")
+        MockHttpServletRequestBuilder request = get("/forecast")
                 .contentType(MediaType.APPLICATION_JSON);
         // when
         MvcResult result = mockMvc.perform(request).andReturn();
@@ -50,5 +49,19 @@ class ForecastFetchServiceIntegrationTest {
         // then
         MockHttpServletResponse response = result.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void fetchForecast_whenLocationIsNotInDatabase_returnsDetailsOfForecast() throws Exception {
+        // given
+        MockHttpServletRequestBuilder request = get("/forecast")
+                .param("location", "Krakow")
+                .contentType(MediaType.APPLICATION_JSON);
+        // when
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        // then
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
     }
 }

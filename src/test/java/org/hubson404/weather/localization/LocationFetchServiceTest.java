@@ -39,7 +39,7 @@ class LocationFetchServiceTest {
         //given
         when(locationRepository.findById(anyLong())).thenReturn(java.util.Optional.of(new Location()));
         //when
-        Location location = locationFetchService.fetchLocationById("1");
+        Location location = locationFetchService.getLocationById(1L);
         //then
         assertThat(location).isNotNull();
         verify(locationRepository, times(1)).findById(anyLong());
@@ -50,7 +50,7 @@ class LocationFetchServiceTest {
         //given
         when(locationRepository.findById(anyLong())).thenThrow(NotFoundException.class);
         //when
-        Throwable result = catchThrowable(() -> locationFetchService.fetchLocationById("1"));
+        Throwable result = catchThrowable(() -> locationFetchService.getLocationById(1L));
         // then
         Assertions.assertThat(result).isExactlyInstanceOf(NotFoundException.class);
         verify(locationRepository, times(1)).findById(anyLong());

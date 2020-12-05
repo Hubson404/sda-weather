@@ -10,6 +10,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Slf4j
 public class ExceptionHandlerController {
 
+    @ExceptionHandler(UnknownLocationException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    void unknownLocationHandler(UnknownLocationException exception) {
+        log.error(exception.getMessage());
+    }
+
     @ExceptionHandler(InsufficientDataException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     void insufficientDataHandler(InsufficientDataException exception) {
