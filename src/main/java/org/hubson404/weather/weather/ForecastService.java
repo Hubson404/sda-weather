@@ -8,12 +8,13 @@ import org.hubson404.weather.exceptions.DataProcessingErrorException;
 import org.hubson404.weather.exceptions.PeriodValueOutOfBoundsException;
 import org.hubson404.weather.localization.Location;
 import org.hubson404.weather.localization.LocationFetchService;
-import org.hubson404.weather.localization.LocationRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +26,6 @@ public class ForecastService {
     private final ForecastMapper forecastMapper;
     private final ForecastRepository forecastRepository;
     private final LocationFetchService locationFetchService;
-    private final LocationRepository locationRepository;
 
     public Forecast getForecast(String locationName, int period) {
         Location location = locationFetchService.getLocationByCityName(locationName);
@@ -45,40 +45,23 @@ public class ForecastService {
         }
 
         String responseBody = responseEntity.getBody();
-        ForecastApiResponse forecastModel; // todo move to try {}
+        Forecast forecast;
 
-        // todo merge try-catches
         try {
-            forecastModel = objectMapper.readValue(responseBody, ForecastApiResponse.class);
+            ForecastModel forecastModel = objectMapper.readValue(responseBody, ForecastModel.class);
+            forecast = forecastMapper.mapToForecast(forecastModel, period, location);
         } catch (JsonProcessingException e) {
             throw new DataProcessingErrorException("Unable to process forecast data.");
+        } catch (IndexOutOfBoundsException e) {
+            throw new PeriodValueOutOfBoundsException("Period value out of bounds, should be between 1 and 5.");
         }
-
-        ForecastDTO forecastDTO;    // todo use Forecast in the business logic layer
-
-        try {
-            forecastDTO = forecastMapper.mapToForecastDto(forecastModel, period,location);
-        }catch (IndexOutOfBoundsException e) {
-            throw new PeriodValueOutOfBoundsException("Period value out of bounds, should be between 0 and 5.");
-        }
-
-        Forecast forecast = saveForecastToDatabase(forecastDTO);
-
-//        location.getForecastList().add(forecast);   // todo it doesn't work - check who is the relationship owner
-//        locationRepository.save(location);
-
-        return forecast;
+        return checkIfForecastAlreadyExists(forecast);
     }
 
-    public Forecast saveForecastToDatabase(ForecastDTO forecastDTO) {
-        Forecast forecast = new Forecast();
-        forecast.setTemperature(forecastDTO.getTemperature());
-        forecast.setAirPressure(forecastDTO.getAirPressure());
-        forecast.setHumidity(forecastDTO.getHumidity());
-        forecast.setWindSpeed(forecastDTO.getWindSpeed());
-        forecast.setWindDegree(forecastDTO.getWindDegree());
-        forecast.setDate(forecastDTO.getDate());
-        forecast.setLocation(forecastDTO.getLocation());
-        return forecastRepository.save(forecast);
+    private Forecast checkIfForecastAlreadyExists(Forecast newForecast) {
+        Optional<Forecast> existingForecast = forecastRepository.findForecastByDate(newForecast.getDate());
+        return existingForecast.orElseGet(() -> forecastRepository.save(newForecast));
     }
+
+
 }

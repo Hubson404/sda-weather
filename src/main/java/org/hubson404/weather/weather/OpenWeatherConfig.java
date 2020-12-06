@@ -12,15 +12,4 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class OpenWeatherConfig {
 
     private String apiKey;
-    private String uri;
-    private String units;
-    private String lang;
-
-    // todo unnecessary entries
-
-    private String apiKeyParameterName;
-    private String queryParameterName;
-    private String unitsParameterName;
-    private String languageParameterName;
-
 }

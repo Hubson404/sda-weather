@@ -32,7 +32,6 @@ class ForecastServiceIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        System.out.println("Seting up test...");
         forecastRepository.deleteAll();
         locationRepository.deleteAll();
 
@@ -43,7 +42,6 @@ class ForecastServiceIntegrationTest {
         location1.setCountryName("Poland");
 
         locationRepository.save(location1);
-        System.out.println("Setup finished");
     }
 
     @Test

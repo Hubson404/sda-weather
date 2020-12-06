@@ -1,6 +1,7 @@
 package org.hubson404.weather.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,9 +12,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ExceptionHandlerController {
 
 
-    @ExceptionHandler(PeriodValueOutOfBoundsException.class)
+    @ExceptionHandler({PeriodValueOutOfBoundsException.class, ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    void PeriodValueOutOfBoundsHandler(PeriodValueOutOfBoundsException exception) {
+    void PeriodValueOutOfBoundsHandler(RuntimeException exception) { // musi byc czesc wspolna na ktora spirng zmapuje
+                                                                     // powyzsze exceptiony
         log.error(exception.getMessage());
     }
 

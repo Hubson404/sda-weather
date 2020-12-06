@@ -5,9 +5,10 @@ import lombok.NoArgsConstructor;
 import org.hubson404.weather.localization.Location;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
-@Entity
 @Data
+@Entity
 @NoArgsConstructor
 public class Forecast {
 
@@ -16,10 +17,10 @@ public class Forecast {
     Long id;
     String temperature;
     String airPressure;
-    String windDegree;
+    String windDirection;
     String windSpeed;
     String humidity;
-    String date;
+    LocalDateTime date;
 
     @ManyToOne
     Location location;

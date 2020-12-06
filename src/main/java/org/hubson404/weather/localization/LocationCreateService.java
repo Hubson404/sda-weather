@@ -3,6 +3,8 @@ package org.hubson404.weather.localization;
 import lombok.RequiredArgsConstructor;
 import org.hubson404.weather.exceptions.InsufficientDataException;
 import org.hubson404.weather.exceptions.InvalidDataException;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,5 +34,17 @@ class LocationCreateService {
         location.setCountryName(ld.getCountryName());
 
         return locationRepository.save(location);
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void setUp() {
+        if (locationRepository.findAll().size() == 0) {
+            Location location1 = new Location();
+            location1.setCityName("Warsaw");
+            location1.setLongitude(55);
+            location1.setLatitude(66);
+            location1.setCountryName("Poland");
+            locationRepository.save(location1);
+        }
     }
 }

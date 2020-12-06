@@ -1,10 +1,15 @@
 package org.hubson404.weather.weather;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hubson404.weather.localization.Location;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -15,9 +20,9 @@ class ForecastDTO {
     Long id;
     String temperature;
     String airPressure;
-    String windDegree;      // todo N, W, S, E, NW, SE 150 -> string
+    String windDirection;
     String windSpeed;
     String humidity;
-    String date;            // todo timestamp -> LocalDateTime
-    Location location;
+    String date;
+    String location;
 }

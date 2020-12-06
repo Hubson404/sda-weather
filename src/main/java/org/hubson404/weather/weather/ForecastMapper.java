@@ -2,8 +2,14 @@ package org.hubson404.weather.weather;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hubson404.weather.exceptions.DataProcessingErrorException;
 import org.hubson404.weather.localization.Location;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,34 +23,68 @@ class ForecastMapper {
                 .airPressure(newForecast.getAirPressure())
                 .humidity(newForecast.getHumidity())
                 .windSpeed(newForecast.getWindSpeed())
-                .windDegree(newForecast.getWindDegree())
-                .date(newForecast.getDate())
+                .windDirection(newForecast.getWindDirection())
+                .date(newForecast.getDate().toString())
+                .location(newForecast.getLocation().getCityName())
                 .build();
     }
 
-    ForecastDTO mapToForecastDto(ForecastApiResponse forecastApiResponse, int period, Location location) {
-        int listingsPerPeriod = 8;
+    public Forecast mapToForecast(ForecastModel forecastModel, int period, Location location) {
 
-        ForecastApiResponse.WeatherListing weatherListing;
+        ForecastModel.WeatherListing weatherListing = getWeatherListing(forecastModel, period);
+        ForecastModel.WeatherListing.Main main = weatherListing.getMain();
+        ForecastModel.WeatherListing.Wind wind = weatherListing.getWind();
 
-        if (period == 0) {
-            weatherListing = forecastApiResponse.getListing().get(0);
+        Forecast forecast = new Forecast();
+        forecast.setTemperature(main.getTemp().toString());
+        forecast.setAirPressure(main.getPressure().toString());
+        forecast.setHumidity(main.getHumidity().toString());
+        forecast.setWindSpeed(wind.getSpeed().toString());
+        forecast.setWindDirection(formatWindDirection(wind.getDeg()));
+        forecast.setDate(convertDate(weatherListing.getDtTxt()));
+        forecast.setLocation(location);
+
+        return forecast;
+    }
+
+    private ForecastModel.WeatherListing getWeatherListing(ForecastModel fM, int period) {
+
+        LocalDateTime soughtDateTime = LocalDate.now().plusDays(period).atTime(12, 00);
+        List<ForecastModel.WeatherListing> listing = fM.getListing();
+
+        return listing.stream()
+                .filter(p -> (convertDate(p.getDtTxt()).equals(soughtDateTime)))
+                .findAny().orElseThrow(() -> new DataProcessingErrorException("Unable to process forecast data."));
+    }
+
+    private String formatWindDirection(Integer windDir) {
+        String windDirection;
+
+        if (windDir >= 326 || windDir < 34) {
+            windDirection = "N";
+        } else if (windDir < 79) {
+            windDirection = "NE";
+        } else if (windDir < 124) {
+            windDirection = "E";
+        } else if (windDir < 169) {
+            windDirection = "SE";
+        } else if (windDir < 214) {
+            windDirection = "S";
+        } else if (windDir < 259) {
+            windDirection = "SW";
+        } else if (windDir < 304) {
+            windDirection = "W";
         } else {
-            weatherListing = forecastApiResponse.getListing().get(listingsPerPeriod * period - 1);  // todo it's genius!
+            windDirection = "NW";
         }
-
-        ForecastApiResponse.WeatherListing.Main main = weatherListing.getMain();
-        ForecastApiResponse.WeatherListing.Wind wind = weatherListing.getWind();
-        Integer windDirectionInDegrees = wind.getDeg();
-
-        return ForecastDTO.builder()
-                .temperature(main.getTemp().toString())
-                .airPressure(main.getPressure().toString())
-                .humidity(main.getHumidity().toString())
-                .windSpeed(wind.getSpeed().toString())
-                .windDegree(windDirectionInDegrees.toString())
-                .date(weatherListing.getDt().toString())
-                .location(location)
-                .build();
+        return windDirection;
     }
+
+    private LocalDateTime convertDate(String timestamp) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalDateTime.parse(timestamp, dateTimeFormatter);
+    }
+
 }
+
+
