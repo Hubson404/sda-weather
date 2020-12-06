@@ -30,7 +30,7 @@ class ForecastMapper {
         if (period == 0) {
             weatherListing = forecastApiResponse.getListing().get(0);
         } else {
-            weatherListing = forecastApiResponse.getListing().get(listingsPerPeriod * period - 1);
+            weatherListing = forecastApiResponse.getListing().get(listingsPerPeriod * period - 1);  // todo it's genius!
         }
 
         ForecastApiResponse.WeatherListing.Main main = weatherListing.getMain();

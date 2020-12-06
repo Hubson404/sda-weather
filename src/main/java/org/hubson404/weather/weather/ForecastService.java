@@ -27,9 +27,7 @@ public class ForecastService {
     private final LocationFetchService locationFetchService;
     private final LocationRepository locationRepository;
 
-
     public Forecast getForecast(String locationName, int period) {
-
         Location location = locationFetchService.getLocationByCityName(locationName);
 
         UriComponents build = UriComponentsBuilder
@@ -47,16 +45,16 @@ public class ForecastService {
         }
 
         String responseBody = responseEntity.getBody();
-        ForecastApiResponse forecastModel;
+        ForecastApiResponse forecastModel; // todo move to try {}
 
+        // todo merge try-catches
         try {
             forecastModel = objectMapper.readValue(responseBody, ForecastApiResponse.class);
-
         } catch (JsonProcessingException e) {
             throw new DataProcessingErrorException("Unable to process forecast data.");
         }
 
-        ForecastDTO forecastDTO;
+        ForecastDTO forecastDTO;    // todo use Forecast in the business logic layer
 
         try {
             forecastDTO = forecastMapper.mapToForecastDto(forecastModel, period,location);
@@ -66,8 +64,8 @@ public class ForecastService {
 
         Forecast forecast = saveForecastToDatabase(forecastDTO);
 
-        location.getForecastList().add(forecast);
-        locationRepository.save(location);
+//        location.getForecastList().add(forecast);   // todo it doesn't work - check who is the relationship owner
+//        locationRepository.save(location);
 
         return forecast;
     }
