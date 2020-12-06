@@ -26,25 +26,24 @@ class ForecastServiceIntegrationTest {
     @Autowired
     ForecastService forecastService;
     @Autowired
+    ForecastRepository forecastRepository;
+    @Autowired
     LocationRepository locationRepository;
 
     @BeforeEach
     void setUp() {
+        System.out.println("Seting up test...");
+        forecastRepository.deleteAll();
         locationRepository.deleteAll();
+
         Location location1 = new Location();
         location1.setCityName("Warsaw");
         location1.setLongitude(55);
         location1.setLatitude(66);
         location1.setCountryName("Poland");
 
-        Location location2 = new Location();
-        location2.setCityName("Oslo");
-        location2.setLongitude(88);
-        location2.setLatitude(77);
-        location2.setCountryName("Norway");
-
         locationRepository.save(location1);
-        locationRepository.save(location2);
+        System.out.println("Setup finished");
     }
 
     @Test
@@ -61,6 +60,7 @@ class ForecastServiceIntegrationTest {
         // then
         MockHttpServletResponse response = result.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+
     }
 
     @Test

@@ -35,13 +35,14 @@ class ForecastMapper {
 
         ForecastApiResponse.WeatherListing.Main main = weatherListing.getMain();
         ForecastApiResponse.WeatherListing.Wind wind = weatherListing.getWind();
+        Integer windDirectionInDegrees = wind.getDeg();
 
         return ForecastDTO.builder()
                 .temperature(main.getTemp().toString())
                 .airPressure(main.getPressure().toString())
                 .humidity(main.getHumidity().toString())
                 .windSpeed(wind.getSpeed().toString())
-                .windDegree(wind.getDeg().toString())
+                .windDegree(windDirectionInDegrees.toString())
                 .date(weatherListing.getDt().toString())
                 .location(location)
                 .build();

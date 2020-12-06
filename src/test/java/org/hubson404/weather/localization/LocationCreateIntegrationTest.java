@@ -1,6 +1,8 @@
 package org.hubson404.weather.localization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hubson404.weather.weather.ForecastRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,14 +26,22 @@ class LocationCreateIntegrationTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
+    ForecastRepository forecastRepository;
+    @Autowired
     LocationRepository locationRepository;
-    ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    ObjectMapper objectMapper;
+
+    @BeforeEach
+    void setUp(){
+        forecastRepository.deleteAll();
+        locationRepository.deleteAll();
+    }
 
     @Test
     void createNewLocation_createsNewLocationAndReturn200StatusCode() throws Exception {
         // given
-        locationRepository.deleteAll();
-        LocationDTO locationDTO = new LocationDTO(
+         LocationDTO locationDTO = new LocationDTO(
                 null,
                 "city",
                 0,
@@ -55,7 +65,6 @@ class LocationCreateIntegrationTest {
     @Test
     void createNewLocation_whenCityIsEmpty_returns400StatusCode() throws Exception {
         // given
-        locationRepository.deleteAll();
         LocationDTO locationDTO = new LocationDTO(
                 null,
                 "  ",
@@ -79,7 +88,6 @@ class LocationCreateIntegrationTest {
     @Test
     void createNewLocation_whenCountryIsEmpty_returns400StatusCode() throws Exception {
         // given
-        locationRepository.deleteAll();
         LocationDTO locationDTO = new LocationDTO(
                 null,
                 "city-name",
@@ -104,7 +112,6 @@ class LocationCreateIntegrationTest {
     @Test
     void createNewLocation_whenLongitudeIsInvalid_returns400StatusCode() throws Exception {
         // given
-        locationRepository.deleteAll();
         LocationDTO locationDTO = new LocationDTO(
                 null,
                 "city-name",
@@ -129,7 +136,6 @@ class LocationCreateIntegrationTest {
     @Test
     void createNewLocation_whenLatitudeIsInvalid_returns400StatusCode() throws Exception {
         // given
-        locationRepository.deleteAll();
         LocationDTO locationDTO = new LocationDTO(
                 null,
                 "city-name",

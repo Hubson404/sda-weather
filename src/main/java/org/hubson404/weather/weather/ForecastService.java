@@ -54,11 +54,16 @@ public class ForecastService {
 
         } catch (JsonProcessingException e) {
             throw new DataProcessingErrorException("Unable to process forecast data.");
-        } catch (IndexOutOfBoundsException e) {
+        }
+
+        ForecastDTO forecastDTO;
+
+        try {
+            forecastDTO = forecastMapper.mapToForecastDto(forecastModel, period,location);
+        }catch (IndexOutOfBoundsException e) {
             throw new PeriodValueOutOfBoundsException("Period value out of bounds, should be between 0 and 5.");
         }
 
-        ForecastDTO forecastDTO = forecastMapper.mapToForecastDto(forecastModel, period,location);
         Forecast forecast = saveForecastToDatabase(forecastDTO);
 
         location.getForecastList().add(forecast);
