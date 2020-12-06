@@ -60,6 +60,7 @@ public class ForecastService {
     }
 
     private Forecast checkIfForecastAlreadyExists(Forecast newForecast) {
+        // todo newForecast.getDate().atZone(ZoneId.of("Europe/Warsaw")).toInstant()
         Optional<Forecast> existingForecast = forecastRepository.findForecastByDate(newForecast.getDate());
         return existingForecast.orElseGet(() -> forecastRepository.save(newForecast));
     }

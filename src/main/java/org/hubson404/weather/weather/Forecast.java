@@ -20,7 +20,7 @@ public class Forecast {
     String windDirection;
     String windSpeed;
     String humidity;
-    LocalDateTime date;
+    LocalDateTime date;     // todo rename eg. forecastDate, predictionDate
 
     @ManyToOne
     Location location;

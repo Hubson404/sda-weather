@@ -49,7 +49,7 @@ class ForecastServiceIntegrationTest {
         // given
         MockHttpServletRequestBuilder request = get("/forecast")
                 .param("location", "Warsaw")
-                .param("period", "0")
+                .param("period", "1")
                 .contentType(MediaType.APPLICATION_JSON);
 
         // when
@@ -58,7 +58,6 @@ class ForecastServiceIntegrationTest {
         // then
         MockHttpServletResponse response = result.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-
     }
 
     @Test
@@ -101,10 +100,9 @@ class ForecastServiceIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON);
 
         // when
-        MvcResult result = mockMvc.perform(request).andReturn();
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
         // then
-        MockHttpServletResponse response = result.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
