@@ -18,6 +18,7 @@ public class LocationMapper {
                 .latitude(newLocation.getLatitude())
                 .regionName(newLocation.getRegionName())
                 .countryName(newLocation.getCountryName())
+                .forecastList(newLocation.getForecastList())
                 .build();
     }
 

@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -63,5 +64,7 @@ public class ForecastService {
         return existingForecast.orElseGet(() -> forecastRepository.save(newForecast));
     }
 
-
+    public List<Forecast> getForecastByCityName(String location) {
+        return forecastRepository.findByLocation_CityName(location);
+    }
 }

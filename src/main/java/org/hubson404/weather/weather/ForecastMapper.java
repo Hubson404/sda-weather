@@ -25,7 +25,7 @@ class ForecastMapper {
                 .windSpeed(newForecast.getWindSpeed())
                 .windDirection(newForecast.getWindDirection())
                 .date(newForecast.getDate().toString())
-                .location(newForecast.getLocation().getCityName())
+                .location(newForecast.getLocation())
                 .build();
     }
 
