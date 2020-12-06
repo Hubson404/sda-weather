@@ -3,9 +3,8 @@ package org.hubson404.weather.weather;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hubson404.weather.localization.Location;
-
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Data
 @Entity
@@ -20,7 +19,7 @@ public class Forecast {
     String windDirection;
     String windSpeed;
     String humidity;
-    LocalDateTime date;     // todo rename eg. forecastDate, predictionDate
+    Instant forecastDate;
 
     @ManyToOne
     Location location;

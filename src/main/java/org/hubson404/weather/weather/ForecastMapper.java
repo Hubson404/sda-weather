@@ -6,8 +6,7 @@ import org.hubson404.weather.exceptions.DataProcessingErrorException;
 import org.hubson404.weather.localization.Location;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -24,7 +23,7 @@ class ForecastMapper {
                 .humidity(newForecast.getHumidity())
                 .windSpeed(newForecast.getWindSpeed())
                 .windDirection(newForecast.getWindDirection())
-                .date(newForecast.getDate().toString())
+                .date(newForecast.getForecastDate().toString())
                 .location(newForecast.getLocation())
                 .build();
     }
@@ -41,7 +40,7 @@ class ForecastMapper {
         forecast.setHumidity(main.getHumidity().toString());
         forecast.setWindSpeed(wind.getSpeed().toString());
         forecast.setWindDirection(formatWindDirection(wind.getDeg()));
-        forecast.setDate(convertDate(weatherListing.getDtTxt()));
+        forecast.setForecastDate(convertDate(weatherListing.getDtTxt()));
         forecast.setLocation(location);
 
         return forecast;
@@ -80,9 +79,11 @@ class ForecastMapper {
         return windDirection;
     }
 
-    private LocalDateTime convertDate(String timestamp) {
+    private Instant convertDate(String timestamp) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(timestamp, dateTimeFormatter);
+        LocalDateTime forecastDate = LocalDateTime.parse(timestamp, dateTimeFormatter);
+        Instant instant = forecastDate.toInstant(ZoneOffset.systemDefault().getRules().getOffset(forecastDate));
+        return instant;
     }
 
 }
