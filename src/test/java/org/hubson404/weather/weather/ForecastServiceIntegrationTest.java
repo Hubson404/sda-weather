@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
@@ -45,7 +46,7 @@ class ForecastServiceIntegrationTest {
     }
 
     @Test
-    void fetchForecast_periodParameterIsZero_returnsResponseStatusCode200() throws Exception {
+    void fetchForecast_periodParameterIsOne_returnsResponseStatusCode200() throws Exception {
         // given
         MockHttpServletRequestBuilder request = get("/forecast")
                 .param("location", "Warsaw")
