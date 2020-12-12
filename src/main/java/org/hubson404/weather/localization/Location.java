@@ -2,11 +2,11 @@ package org.hubson404.weather.localization;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hubson404.weather.weather.Forecast;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,4 +21,7 @@ public class Location {
     int longitude;
     String regionName;
     String countryName;
+
+    @OneToMany(mappedBy = "location")
+    List<Forecast> forecastList = new ArrayList<>();
 }

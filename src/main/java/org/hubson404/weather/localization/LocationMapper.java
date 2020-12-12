@@ -12,11 +12,13 @@ public class LocationMapper {
     LocationDTO mapToLocationDto(Location newLocation) {
 
         return LocationDTO.builder()
+                .id(newLocation.getId())
                 .cityName(newLocation.getCityName())
                 .longitude(newLocation.getLongitude())
                 .latitude(newLocation.getLatitude())
                 .regionName(newLocation.getRegionName())
                 .countryName(newLocation.getCountryName())
+                .forecastList(newLocation.getForecastList())
                 .build();
     }
 

@@ -1,6 +1,8 @@
 package org.hubson404.weather.localization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hubson404.weather.weather.ForecastRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,21 +26,29 @@ class LocationCreateIntegrationTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
+    ForecastRepository forecastRepository;
+    @Autowired
     LocationRepository locationRepository;
-    ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    ObjectMapper objectMapper;
+
+    @BeforeEach
+    void setUp() {
+        forecastRepository.deleteAll();
+        locationRepository.deleteAll();
+    }
 
     @Test
     void createNewLocation_createsNewLocationAndReturn200StatusCode() throws Exception {
         // given
-        locationRepository.deleteAll();
-        LocationDTO locationDTO = new LocationDTO(
-                null,
-                "city",
-                0,
-                0,
-                "region",
-                "coutry"
-        );
+        LocationDTO locationDTO = LocationDTO.builder()
+                .id(null)
+                .cityName("cityName")
+                .longitude(0)
+                .latitude(0)
+                .regionName("region")
+                .countryName("country")
+                .build();
         String requestBody = objectMapper.writeValueAsString(locationDTO);
         MockHttpServletRequestBuilder post = post("/locations")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -55,15 +65,15 @@ class LocationCreateIntegrationTest {
     @Test
     void createNewLocation_whenCityIsEmpty_returns400StatusCode() throws Exception {
         // given
-        locationRepository.deleteAll();
-        LocationDTO locationDTO = new LocationDTO(
-                null,
-                "  ",
-                0,
-                0,
-                "region",
-                "country"
-        );
+        LocationDTO locationDTO = LocationDTO.builder()
+                .id(null)
+                .cityName("")
+                .longitude(0)
+                .latitude(0)
+                .regionName("region")
+                .countryName("country")
+                .build();
+
         String requestBody = objectMapper.writeValueAsString(locationDTO);
         MockHttpServletRequestBuilder post = post("/locations")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -76,18 +86,18 @@ class LocationCreateIntegrationTest {
         List<Location> locations = locationRepository.findAll();
         assertThat(locations).isEmpty();
     }
+
     @Test
     void createNewLocation_whenCountryIsEmpty_returns400StatusCode() throws Exception {
         // given
-        locationRepository.deleteAll();
-        LocationDTO locationDTO = new LocationDTO(
-                null,
-                "city-name",
-                0,
-                0,
-                "region",
-                "  "
-        );
+        LocationDTO locationDTO = LocationDTO.builder()
+                .id(null)
+                .cityName("cityName")
+                .longitude(0)
+                .latitude(0)
+                .regionName("region")
+                .countryName("")
+                .build();
         String requestBody = objectMapper.writeValueAsString(locationDTO);
         MockHttpServletRequestBuilder post = post("/locations")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -104,15 +114,14 @@ class LocationCreateIntegrationTest {
     @Test
     void createNewLocation_whenLongitudeIsInvalid_returns400StatusCode() throws Exception {
         // given
-        locationRepository.deleteAll();
-        LocationDTO locationDTO = new LocationDTO(
-                null,
-                "city-name",
-                0,
-                100,
-                "region",
-                "country"
-        );
+        LocationDTO locationDTO = LocationDTO.builder()
+                .id(null)
+                .cityName("cityName")
+                .longitude(100)
+                .latitude(0)
+                .regionName("region")
+                .countryName("country")
+                .build();
         String requestBody = objectMapper.writeValueAsString(locationDTO);
         MockHttpServletRequestBuilder post = post("/locations")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -129,15 +138,14 @@ class LocationCreateIntegrationTest {
     @Test
     void createNewLocation_whenLatitudeIsInvalid_returns400StatusCode() throws Exception {
         // given
-        locationRepository.deleteAll();
-        LocationDTO locationDTO = new LocationDTO(
-                null,
-                "city-name",
-                200,
-                0,
-                "region",
-                "country"
-        );
+        LocationDTO locationDTO = LocationDTO.builder()
+                .id(null)
+                .cityName("cityName")
+                .longitude(0)
+                .latitude(200)
+                .regionName("region")
+                .countryName("country")
+                .build();
         String requestBody = objectMapper.writeValueAsString(locationDTO);
         MockHttpServletRequestBuilder post = post("/locations")
                 .contentType(MediaType.APPLICATION_JSON)
