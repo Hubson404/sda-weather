@@ -6,7 +6,10 @@ import org.hubson404.weather.exceptions.DataProcessingErrorException;
 import org.hubson404.weather.localization.Location;
 import org.springframework.stereotype.Component;
 
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -49,10 +52,12 @@ class ForecastMapper {
     private ForecastModel.WeatherListing getWeatherListing(ForecastModel fM, int period) {
 
         LocalDateTime soughtDateTime = LocalDate.now().plusDays(period).atTime(12, 00);
+        String soughtDateTimeString = soughtDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
         List<ForecastModel.WeatherListing> listing = fM.getListing();
 
         return listing.stream()
-                .filter(p -> (convertDate(p.getDtTxt()).equals(soughtDateTime)))
+                .filter(p -> (convertDate(p.getDtTxt()).equals(convertDate(soughtDateTimeString))))
                 .findAny().orElseThrow(() -> new DataProcessingErrorException("Unable to process forecast data."));
     }
 
