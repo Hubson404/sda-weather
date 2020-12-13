@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @NoArgsConstructor
@@ -51,14 +52,24 @@ class ForecastMapper {
 
     private ForecastModel.WeatherListing getWeatherListing(ForecastModel fM, int period) {
 
-        LocalDateTime soughtDateTime = LocalDate.now().plusDays(period).atTime(12, 00);
+        LocalDateTime soughtDateTime = LocalDate.now().plusDays(period).atTime(12, 0);
         String soughtDateTimeString = soughtDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         List<ForecastModel.WeatherListing> listing = fM.getListing();
 
-        return listing.stream()
+        Optional<ForecastModel.WeatherListing> weatherListing = listing.stream()
                 .filter(p -> (convertDate(p.getDtTxt()).equals(convertDate(soughtDateTimeString))))
-                .findAny().orElseThrow(() -> new DataProcessingErrorException("Unable to process forecast data."));
+                .findAny();
+
+        if (weatherListing.isPresent()) {
+            return weatherListing.get();
+        } else if (period == 0) {
+            return listing.get(0);
+        } else if (period == 5) {
+            return listing.get(listing.size() - 1);
+        } else {
+            throw new DataProcessingErrorException("Unable to process forecast data.");
+        }
     }
 
     private String formatWindDirection(Integer windDir) {

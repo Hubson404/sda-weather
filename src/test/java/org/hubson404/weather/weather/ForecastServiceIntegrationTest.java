@@ -43,13 +43,28 @@ class ForecastServiceIntegrationTest {
 
         locationRepository.save(location1);
     }
+    @Test
+    void fetchForecast_periodParameterIsOne_returnsResponseStatusCode200() throws Exception {
+        // given
+        MockHttpServletRequestBuilder request = get("/forecast")
+                .param("location", "Warsaw")
+                .param("period", "1")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // when
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        // then
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+    }
 
     @Test
     void fetchForecast_periodParameterIsZero_returnsResponseStatusCode200() throws Exception {
         // given
         MockHttpServletRequestBuilder request = get("/forecast")
                 .param("location", "Warsaw")
-                .param("period", "1")
+                .param("period", "0")
                 .contentType(MediaType.APPLICATION_JSON);
 
         // when
