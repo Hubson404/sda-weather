@@ -22,7 +22,7 @@ public class ForecastController {
     @GetMapping("/forecast")
     public ForecastDTO getForecast(@RequestParam String location,
                                    @RequestParam(required = false, defaultValue = "1")
-                                   @Min(1)
+                                   @Min(0)
                                    @Max(5)
                                            int period) {
         Forecast forecast = forecastService.getForecast(location, period);
