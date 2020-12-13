@@ -12,7 +12,6 @@ import javax.validation.ConstraintViolationException;
 @Slf4j
 public class ExceptionHandlerController {
 
-    // todo import from the correct package
     @ExceptionHandler({PeriodValueOutOfBoundsException.class, ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     void PeriodValueOutOfBoundsHandler(RuntimeException exception) { // musi byc czesc wspolna na ktora spirng zmapuje

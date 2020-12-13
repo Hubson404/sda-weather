@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
@@ -51,6 +52,7 @@ class LocationCreateIntegrationTest {
                 .build();
         String requestBody = objectMapper.writeValueAsString(locationDTO);
         MockHttpServletRequestBuilder post = post("/locations")
+                .with(user("admin").roles("ADMIN"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody);
         // when
@@ -76,6 +78,7 @@ class LocationCreateIntegrationTest {
 
         String requestBody = objectMapper.writeValueAsString(locationDTO);
         MockHttpServletRequestBuilder post = post("/locations")
+                .with(user("admin").roles("ADMIN"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody);
         // when
@@ -100,6 +103,7 @@ class LocationCreateIntegrationTest {
                 .build();
         String requestBody = objectMapper.writeValueAsString(locationDTO);
         MockHttpServletRequestBuilder post = post("/locations")
+                .with(user("admin").roles("ADMIN"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody);
         // when
@@ -124,6 +128,7 @@ class LocationCreateIntegrationTest {
                 .build();
         String requestBody = objectMapper.writeValueAsString(locationDTO);
         MockHttpServletRequestBuilder post = post("/locations")
+                .with(user("admin").roles("ADMIN"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody);
         // when
@@ -148,6 +153,7 @@ class LocationCreateIntegrationTest {
                 .build();
         String requestBody = objectMapper.writeValueAsString(locationDTO);
         MockHttpServletRequestBuilder post = post("/locations")
+                .with(user("admin").roles("ADMIN"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody);
         // when
