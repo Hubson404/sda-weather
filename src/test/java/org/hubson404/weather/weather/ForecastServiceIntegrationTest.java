@@ -61,7 +61,7 @@ class ForecastServiceIntegrationTest {
     }
 
     @Test
-    void fetchForecast_periodParameterIsOne_returnsResponseStatusCode200() throws Exception {
+    void fetchForecast_periodParameterIsZero_returnsResponseStatusCode200() throws Exception {
         // given
         MockHttpServletRequestBuilder request = get("/forecast")
                 .param("location", "Warsaw")
