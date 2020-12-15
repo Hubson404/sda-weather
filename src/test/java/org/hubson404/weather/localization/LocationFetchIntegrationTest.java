@@ -1,5 +1,6 @@
 package org.hubson404.weather.localization;
 
+import org.hubson404.weather.weather.ForecastRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,10 +23,13 @@ class LocationFetchIntegrationTest {
     MockMvc mockMvc;
     @Autowired
     LocationRepository locationRepository;
+    @Autowired
+    ForecastRepository forecastRepository;
 
     @Test
     void fetchEntryDetails_returnsDetailsOfEntry() throws Exception {
         // given
+        forecastRepository.deleteAll();
         locationRepository.deleteAll();
         Location location = new Location();
         location.setCityName("new-city");
@@ -50,6 +54,7 @@ class LocationFetchIntegrationTest {
     @Test
     void fetchLocationDetails_whenRepositoryIsEmpty_returnsDetailsOfLocation() throws Exception {
         // given
+        forecastRepository.deleteAll();
         locationRepository.deleteAll();
         MockHttpServletRequestBuilder request = get("/locations/1")
                 .contentType(MediaType.APPLICATION_JSON);
